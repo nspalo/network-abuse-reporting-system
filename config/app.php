@@ -179,6 +179,7 @@ return [
          * Doctrine Service Providers...
          */
         LaravelDoctrine\ORM\DoctrineServiceProvider::class,
+        LaravelDoctrine\ACL\AclServiceProvider::class,
         LaravelDoctrine\Migrations\MigrationsServiceProvider::class,
         LaravelDoctrine\Extensions\GedmoExtensionsServiceProvider::class
 

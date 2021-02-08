@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "637e8f97a8bdaac50d05d13f1407ed67",
+    "content-hash": "477f186c91fb909824654ea64eb2a452",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -1863,6 +1863,68 @@
                 }
             ],
             "time": "2020-09-14T14:23:00+00:00"
+        },
+        {
+            "name": "laravel-doctrine/acl",
+            "version": "1.0.18",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel-doctrine/acl.git",
+                "reference": "0da5f2556ce779a365f11250b0d78f511861e2f2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel-doctrine/acl/zipball/0da5f2556ce779a365f11250b0d78f511861e2f2",
+                "reference": "0da5f2556ce779a365f11250b0d78f511861e2f2",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/auth": "~5.1",
+                "illuminate/config": "~5.1",
+                "illuminate/contracts": "~5.1",
+                "illuminate/support": "~5.1",
+                "laravel-doctrine/orm": "~1.0",
+                "php": ">=5.5.9"
+            },
+            "require-dev": {
+                "mockery/mockery": "~0.9",
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "LaravelDoctrine\\ACL\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Patrick Brouwers",
+                    "email": "patrick@maatwebsite.nl"
+                }
+            ],
+            "description": "Doctrine ACL for Doctrine 2 and Laravel 5",
+            "keywords": [
+                "abilities",
+                "acl",
+                "data mapper",
+                "database",
+                "doctrine",
+                "laravel",
+                "organisations",
+                "orm",
+                "permissions",
+                "policies",
+                "roles"
+            ],
+            "support": {
+                "issues": "https://github.com/laravel-doctrine/acl/issues",
+                "source": "https://github.com/laravel-doctrine/acl/tree/1.0"
+            },
+            "time": "2019-10-03T11:58:48+00:00"
         },
         {
             "name": "laravel-doctrine/extensions",
