@@ -11,6 +11,17 @@
 |
 */
 
+//Route::get('/', function () {
+//    return view('welcome');
+//});
+
 Route::get('/', function () {
-    return view('welcome');
+    return view('layouts.main');
 });
+
+Route::get('/users', function () {
+    return 'users';
+});
+
+
+
