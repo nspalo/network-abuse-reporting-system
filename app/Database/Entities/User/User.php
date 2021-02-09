@@ -2,16 +2,27 @@
 
 namespace App\Database\Entities\User;
 
-use App\Database\Entities\Entity;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+//use LaravelDoctrine\ACL\Contracts\Permission;
+//use LaravelDoctrine\ACL\Contracts\Role;
+use LaravelDoctrine\ACL\Mappings as ACL;
+use LaravelDoctrine\ACL\Roles\HasRoles;
+use LaravelDoctrine\ACL\Permissions\HasPermissions;
+use LaravelDoctrine\ACL\Contracts\HasRoles as HasRolesContract;
+use LaravelDoctrine\ACL\Contracts\HasPermissions as HasPermissionContract;
+use App\Database\Entities\Entity;
 
 /**
  * Class User
  * @package App\Database\Entities\User
  * @ORM\Entity
  */
-class User extends Entity
+class User extends Entity implements HasRolesContract, HasPermissionContract
 {
+    use HasRoles;
+    use HasPermissions;
+
     /**
      * Username
      *
@@ -45,6 +56,17 @@ class User extends Entity
     protected $lastName;
 
     /**
+     * @ACL\HasRoles()
+     * @var \Doctrine\Common\Collections\ArrayCollection|\LaravelDoctrine\ACL\Contracts\Role[]
+     */
+    protected $roles;
+
+    /**
+     * @ACL\HasPermissions
+     */
+    public $permissions;
+
+    /**
      * User constructor.
      * @param string $username
      * @param string $password
@@ -57,6 +79,9 @@ class User extends Entity
         $this->setPassword($password);
         $this->setFirstName($firstName);
         $this->setLastName($lastName);
+
+        $this->roles = new ArrayCollection();
+        $this->permissions = new ArrayCollection();
     }
 
     /**
@@ -96,7 +121,7 @@ class User extends Entity
             throw new \Exception("Password is required.");
         }
 
-        $this->password = bcrypt($password);
+        $this->password = password_hash($password, PASSWORD_BCRYPT); // bcrypt($password);
     }
 
     /**
@@ -137,5 +162,15 @@ class User extends Entity
         }
 
         $this->lastName = $lastName;
+    }
+
+    public function getRoles()
+    {
+        // TODO: Implement getRoles() method.
+    }
+
+    public function getPermissions()
+    {
+        // TODO: Implement getPermissions() method.
     }
 }

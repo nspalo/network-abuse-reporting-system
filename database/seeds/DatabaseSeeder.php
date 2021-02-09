@@ -1,5 +1,8 @@
 <?php
 
+use database\seeds\UserPermisionSeeder;
+use database\seeds\UserRoleSeeder;
+use database\seeds\UserSeeder;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -12,5 +15,10 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // $this->call(UsersTableSeeder::class);
+        $this->call([
+            UserPermisionSeeder::class,
+            UserRoleSeeder::class,
+            UserSeeder::class,
+        ]);
     }
 }
