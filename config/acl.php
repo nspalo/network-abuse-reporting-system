@@ -8,7 +8,7 @@ return [
     |--------------------------------------------------------------------------
     */
     'roles'         => [
-        'entity' => App\Role::class,
+        'entity' => App\Database\Entities\Role\Role::class,
     ],
     /*
     |--------------------------------------------------------------------------
@@ -20,8 +20,8 @@ return [
     |
     */
     'permissions'   => [
-        'driver' => 'config',
-        'entity' => LaravelDoctrine\ACL\Permissions\Permission::class,
+        'driver' => 'doctrine',
+        'entity' => App\Database\Entities\Permission\Permission::class,
         'list'   => [],
     ],
     /*
@@ -30,6 +30,6 @@ return [
     |--------------------------------------------------------------------------
     */
     'organisations' => [
-        'entity' => App\Organisation::class,
+        'entity' => null,
     ],
 ];

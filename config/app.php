@@ -181,7 +181,12 @@ return [
         LaravelDoctrine\ORM\DoctrineServiceProvider::class,
         LaravelDoctrine\ACL\AclServiceProvider::class,
         LaravelDoctrine\Migrations\MigrationsServiceProvider::class,
-        LaravelDoctrine\Extensions\GedmoExtensionsServiceProvider::class
+        LaravelDoctrine\Extensions\GedmoExtensionsServiceProvider::class,
+
+        /*
+         * Custom Service Providers...
+         */
+        App\Providers\RepositoryServiceProvider::class,
 
     ],
 
