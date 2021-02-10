@@ -29,5 +29,4 @@ Route::group(['prefix' => 'users'], function () {
     Route::post('/register', 'User\UserRegistrationController@store');
 });
 
-
-
+Route::get('/check-ip-reports', 'AbuseReporting\AbuseReportingController@checkReportByIP');

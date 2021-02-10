@@ -2,8 +2,14 @@
 
 namespace App\Providers;
 
+use App\Database\Entities\AbuseReports\AbuseReport;
+use App\Database\Entities\NetworkAddress\NetworkAddress;
 use App\Database\Entities\Role\Role;
 use App\Database\Entities\User\User;
+use App\Database\Repositories\AbuseReports\AbuseReportRepository;
+use App\Database\Repositories\AbuseReports\AbuseReportRepositoryInterface;
+use App\Database\Repositories\NetworkAddress\NetworkAddressRepository;
+use App\Database\Repositories\NetworkAddress\NetworkAddressRepositoryInterface;
 use App\Database\Repositories\Role\RoleRepository;
 use App\Database\Repositories\Role\RoleRepositoryInterface;
 use App\Database\Repositories\User\UserRepository;
@@ -27,6 +33,16 @@ class RepositoryServiceProvider extends ServiceProvider
             'interface' => UserRepositoryInterface::class,
             'repository' => UserRepository::class,
             'entity' => User::class
+        ],
+        [
+            'interface' => NetworkAddressRepositoryInterface::class,
+            'repository' => NetworkAddressRepository::class,
+            'entity' => NetworkAddress::class
+        ],
+        [
+            'interface' => AbuseReportRepositoryInterface::class,
+            'repository' => AbuseReportRepository::class,
+            'entity' => AbuseReport::class
         ],
     ];
 
