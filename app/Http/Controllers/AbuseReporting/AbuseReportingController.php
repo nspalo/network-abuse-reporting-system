@@ -9,9 +9,12 @@ use App\Database\Repositories\NetworkAddress\NetworkAddressRepositoryInterface;
 use App\Database\Repositories\User\UserRepositoryInterface;
 use App\Http\Controllers\NetworkAbuseReportingSystemController;
 use App\Http\Requests\NetworkAbuseReport\NetworkAbuseReportRequest;
+use App\Renderers\AbuseReport\AbuseReportRenderer;
+use App\Renderers\NetworkAddress\NetworkAddressRenderer;
 use App\Services\NetworkAbuseReporting\NetworkAbuseReportingService;
 use Doctrine\ORM\EntityManager;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 /**
  * Class AbuseReportingController
@@ -22,7 +25,7 @@ class AbuseReportingController extends NetworkAbuseReportingSystemController
     /**
      * @var NetworkAddressRepositoryInterface
      */
-    private $IPAddressRepository;
+    private $networkAddressRepository;
     /**
      * @var AbuseReportRepositoryInterface
      */
@@ -35,72 +38,91 @@ class AbuseReportingController extends NetworkAbuseReportingSystemController
      * @var NetworkAbuseReportingService
      */
     private $networkAbuseReportingService;
+    /**
+     * @var NetworkAddressRenderer
+     */
+    private $networkAddressRenderer;
+    /**
+     * @var AbuseReportRenderer
+     */
+    private $abuseReportRenderer;
 
     /**
      * AbuseReportingController constructor.
      * @param EntityManager $entityManager
-     * @param NetworkAddressRepositoryInterface $IPAddressRepository
+     * @param NetworkAddressRepositoryInterface $networkAddressRepository
      * @param AbuseReportRepositoryInterface $abuseReportRepository
      * @param UserRepositoryInterface $userRepository
      * @param NetworkAbuseReportingService $networkAbuseReportingService
+     * @param NetworkAddressRenderer $networkAddressRenderer
+     * @param AbuseReportRenderer $abuseReportRenderer
      */
     public function __construct(
         EntityManager $entityManager,
-        NetworkAddressRepositoryInterface $IPAddressRepository,
+        NetworkAddressRepositoryInterface $networkAddressRepository,
         AbuseReportRepositoryInterface $abuseReportRepository,
         UserRepositoryInterface $userRepository,
-        NetworkAbuseReportingService $networkAbuseReportingService
+        NetworkAbuseReportingService $networkAbuseReportingService,
+        NetworkAddressRenderer $networkAddressRenderer,
+        AbuseReportRenderer $abuseReportRenderer
     )
     {
         parent::__construct($entityManager);
-        $this->IPAddressRepository = $IPAddressRepository;
+        $this->networkAddressRepository = $networkAddressRepository;
         $this->abuseReportRepository = $abuseReportRepository;
         $this->userRepository = $userRepository;
         $this->networkAbuseReportingService = $networkAbuseReportingService;
+        $this->networkAddressRenderer = $networkAddressRenderer;
+        $this->abuseReportRenderer = $abuseReportRenderer;
     }
 
     /**
      * @return JsonResponse
      */
-    public function checkReportByIP(): JsonResponse
+    public function getReports(): JsonResponse
     {
-        $reports = $this->abuseReportRepository->findReportByIp('124.6.181.20');
-        $abuseReports = [];
-
-        /** @var AbuseReport $report */
-        foreach ($reports as $report) {
-            $abuseReports[] = [
-                'ip' => $report->getIpAddress(),
-                'comment' => $report->getComment(),
-                'reporter' => ($report->getReporter())?$report->getReporter()->getUsername() : []
-            ];
-        }
-
-
-        /** @var User $user */
-        $user = $this->userRepository->findByUsername('jdoe');
-        $userReports = $this->abuseReportRepository->findReportsByUserId($user->getId());
-        $reports = [];
-
-        foreach ($userReports as $report) {
-            $reports[$user->getUsername()][] = [
-                "ipAddress" => $report->getIpAddress(),
-                "comment" => $report->getComment()
-            ];
-            //dump($report);
-        }
-
-        //dd($userReports);
-
-
         return response()->json([
             'success' => true,
-            'reports' => $abuseReports,
-            'userReports' => $reports
+            'records' => $this->abuseReportRenderer->render(
+                $this->abuseReportRepository->findAll()
+            )
         ]);
     }
 
     /**
+     * @param string|null $ip
+     * @return JsonResponse
+     */
+    public function checkReportByIP(string $ip = null): JsonResponse
+    {
+        return response()->json([
+            'records' => $this->networkAddressRenderer->render(
+                (isset($ip))
+                    ? $this->networkAddressRepository->findByIPAddress($ip)
+                        : $this->networkAddressRepository->findAll()
+            )
+        ]);
+    }
+
+    /**
+     * @param string|null $username
+     * @return JsonResponse
+     */
+    public function checkAbuseReportRecordByUsername(string $username = null): JsonResponse
+    {
+        return response()->json([
+            'records' => (isset($username)) ?
+                $this->abuseReportRenderer->render(
+                    $this->abuseReportRepository->findReportsByUserId(
+                        $this->userRepository->findByUsername($username)->getId()
+                    )
+                ) : []
+        ]);
+    }
+
+    /**
+     * Create Network Abuse Report
+     *
      * @param NetworkAbuseReportRequest $networkAbuseReportRequest
      * @return JsonResponse
      * @throws \Doctrine\ORM\ORMException
@@ -112,7 +134,6 @@ class AbuseReportingController extends NetworkAbuseReportingSystemController
         $this->entityManager->refresh($abuseReport);
 
         return response()->json([
-            'success' => true,
             'recordId' => $abuseReport->getId(),
         ]);
     }

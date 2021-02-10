@@ -35,8 +35,7 @@ Route::group(['prefix' => 'network-abuse'], function () {
      * Reporting
      */
     Route::post('/report', 'AbuseReporting\AbuseReportingController@reportNetworkAbuse');
-
-    Route::get('/check-ip', 'AbuseReporting\AbuseReportingController@checkReportByIP');
+    Route::get('/check', 'AbuseReporting\AbuseReportingController@checkReportByIP');
 
 
 });

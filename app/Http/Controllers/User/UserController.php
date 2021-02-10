@@ -2,66 +2,53 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Database\Entities\Role\Role;
-use App\Database\Entities\User\User;
 use App\Database\Repositories\User\UserRepositoryInterface;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\NetworkAbuseReportingSystemController;
+use App\Renderers\User\UserRenderer;
 use Doctrine\ORM\EntityManager;
+use Illuminate\Http\JsonResponse;
 
 /**
  * Class UserController
  * @package App\Http\Controllers\User
  */
-class UserController extends Controller
+class UserController extends NetworkAbuseReportingSystemController
 {
-    /**
-     * @var EntityManager
-     */
-    private $entityManager;
     /**
      * @var UserRepositoryInterface
      */
     private $userRepository;
+    /**
+     * @var UserRenderer
+     */
+    private $userRenderer;
 
     /**
      * UserController constructor.
      * @param EntityManager $entityManager
      * @param UserRepositoryInterface $userRepository
+     * @param UserRenderer $userRenderer
      */
-    public function __construct(EntityManager $entityManager, UserRepositoryInterface $userRepository)
+    public function __construct(
+        EntityManager $entityManager,
+        UserRepositoryInterface $userRepository,
+        UserRenderer $userRenderer
+    )
     {
-        $this->entityManager = $entityManager;
+        parent::__construct($entityManager);
         $this->userRepository = $userRepository;
+        $this->userRenderer = $userRenderer;
     }
 
-
-
-    public function index()
+    /**
+     * @return JsonResponse
+     */
+    public function index(): JsonResponse
     {
-        $users = $this->userRepository->findAllUser();
-        $usersInfo = [];
-
-        /** @var User $user */
-        foreach( $users as $user ) {
-
-//            $roles = $user->getRoles()->toArray();
-//            /** @var Role $role */
-//            foreach ( $roles as $role) {
-//                $roleName = $role->getName();
-//                $rolePermissions = $user->getPermissionNamesByRole($role);
-//            }
-
-            $usersInfo[] = [
-                'username' => $user->getUsername(),
-                'firstname' => $user->getFirstName(),
-                'lastname' => $user->getLastName(),
-                'roles' => implode(",",$user->getRoleNames()),
-            ];
-
-        }
-
-
-        dump($usersInfo);
-        dd('stop');
+        return response()->json([
+            'users' => $this->userRenderer->render(
+                $this->userRepository->findAllUser()
+            )
+        ]);
     }
 }
