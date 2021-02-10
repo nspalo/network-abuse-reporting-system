@@ -4,6 +4,7 @@ namespace App\Services\User;
 
 use App\Database\Entities\Role\Role;
 use App\Database\Entities\User\User;
+use App\Database\Repositories\Role\RoleRepositoryInterface;
 use App\Services\AbstractService;
 use Doctrine\ORM\EntityManager;
 
@@ -14,15 +15,28 @@ use Doctrine\ORM\EntityManager;
 class UserRegistrationService extends AbstractService
 {
     /**
+     * @var RoleRepositoryInterface
+     */
+    private $roleRepository;
+
+    /**
      * UserRegistrationService constructor.
      * @param EntityManager $entityManager
+     * @param RoleRepositoryInterface $roleRepository
      */
-    public function __construct(EntityManager $entityManager)
+    public function __construct(EntityManager $entityManager, RoleRepositoryInterface $roleRepository)
     {
         parent::__construct($entityManager);
+        $this->roleRepository = $roleRepository;
     }
 
-    public function handle(UserRegistrationRequestInterface $userRegistrationRequest)
+    /**
+     * Process user Registration
+     *
+     * @param UserRegistrationRequestInterface $userRegistrationRequest
+     * @return User
+     */
+    public function handle(UserRegistrationRequestInterface $userRegistrationRequest): User
     {
         /** Create New User */
         $user = new User(
@@ -32,9 +46,9 @@ class UserRegistrationService extends AbstractService
             $userRegistrationRequest->getLastName()
         );
 
-        // Temporarily get the Guest Role and assign it to the new user.
-        $sysRoles = $this->entityManager->getRepository(Role::class)->findBy(['name'=>'Guest']);
-        $user->setRoles($sysRoles);
+        $user->setRoles(// Set New User's Role to User
+            $this->roleRepository->findByRolesName("User")
+        );
 
         return $user;
     }

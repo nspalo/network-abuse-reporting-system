@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Database\Entities\Role\Role;
 use App\Database\Entities\User\User;
+use App\Database\Repositories\User\UserRepositoryInterface;
 use App\Http\Controllers\Controller;
 use Doctrine\ORM\EntityManager;
 
@@ -17,24 +18,27 @@ class UserController extends Controller
      * @var EntityManager
      */
     private $entityManager;
+    /**
+     * @var UserRepositoryInterface
+     */
+    private $userRepository;
 
     /**
      * UserController constructor.
      * @param EntityManager $entityManager
+     * @param UserRepositoryInterface $userRepository
      */
-    public function __construct(EntityManager $entityManager)
+    public function __construct(EntityManager $entityManager, UserRepositoryInterface $userRepository)
     {
-
         $this->entityManager = $entityManager;
+        $this->userRepository = $userRepository;
     }
 
 
 
     public function index()
     {
-        $users = $this->entityManager->getRepository(User::class)->findAll();
-        //dump($users);
-
+        $users = $this->userRepository->findAllUser();
         $usersInfo = [];
 
         /** @var User $user */
@@ -59,6 +63,5 @@ class UserController extends Controller
 
         dump($usersInfo);
         dd('stop');
-        //return view('testview', compact('users'));
     }
 }

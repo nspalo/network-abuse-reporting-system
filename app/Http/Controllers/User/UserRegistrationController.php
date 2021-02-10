@@ -9,8 +9,6 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 /**
  * Class UserController
@@ -38,7 +36,6 @@ class UserRegistrationController extends Controller
     ) {
         $this->entityManager = $entityManager;
         $this->userRegistrationService = $userRegistrationService;
-        Auth::guest();
     }
 
 
