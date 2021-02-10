@@ -1,10 +1,13 @@
 <?php
 
-use database\seeds\UserPermisionSeeder;
-use database\seeds\UserRoleSeeder;
-use database\seeds\UserSeeder;
+use App\Database\Seeders\UserPermisionSeeder;
+use App\Database\Seeders\UserRoleSeeder;
+use App\Database\Seeders\UserSeeder;
 use Illuminate\Database\Seeder;
 
+/**
+ * Class DatabaseSeeder
+ */
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -14,7 +17,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call(UsersTableSeeder::class);
+        /**
+         * Populate Initial Data
+         */
         $this->call([
             UserPermisionSeeder::class,
             UserRoleSeeder::class,

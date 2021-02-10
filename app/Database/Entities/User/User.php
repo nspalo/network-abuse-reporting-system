@@ -5,6 +5,7 @@ namespace App\Database\Entities\User;
 use App\Database\Entities\Permission\Permission;
 use App\Database\Entities\Role\Role;
 use App\Database\Entities\Entity;
+use App\Traits\PasswordEncryption;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Illuminate\Auth\Passwords\CanResetPassword;
@@ -24,7 +25,7 @@ use LaravelDoctrine\ORM\Auth\Authenticatable;
  */
 class User extends Entity implements HasRolesContract, AuthenticatableContract, CanResetPasswordContract
 {
-    use HasRoles, HasPermissions, Authenticatable, CanResetPassword;
+    use HasRoles, HasPermissions, Authenticatable, CanResetPassword, PasswordEncryption;
 
     /**
      * Username
@@ -119,7 +120,7 @@ class User extends Entity implements HasRolesContract, AuthenticatableContract, 
             throw new \RuntimeException("Password is required.");
         }
 
-        $this->password = password_hash($password, PASSWORD_BCRYPT); // bcrypt($password);
+        $this->password = $this->encryptWithBcrypt($password); // password_hash($password, PASSWORD_BCRYPT); // bcrypt($password);
     }
 
     /**

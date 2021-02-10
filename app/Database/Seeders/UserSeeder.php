@@ -1,7 +1,8 @@
 <?php
 
-namespace database\seeds;
+namespace App\Database\Seeders;
 
+use App\Traits\PasswordEncryption;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -12,6 +13,8 @@ use Illuminate\Support\Str;
  */
 class UserSeeder extends Seeder
 {
+    use PasswordEncryption;
+
     /**
      * Run the database seeds.
      *
@@ -20,15 +23,18 @@ class UserSeeder extends Seeder
     public function run()
     {
         $userId = Str::uuid();
+        $currentDateTime = Carbon::now();
+        $defaultPassword = '1234567890';
 
+        /** Create a Default User */
         DB::table('users')->insert([
             'id' => $userId,
             'username' => 'sysAdmin',
-            'password' => password_hash('1234567890', PASSWORD_BCRYPT),
+            'password' => $this->encryptWithBcrypt($defaultPassword),//password_hash('1234567890', PASSWORD_BCRYPT),
             'first_name' => 'John',
             'last_name' => 'Doe',
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now()
+            'created_at' => $currentDateTime,
+            'updated_at' => $currentDateTime
         ]);
 
         /** Set the user above as a Administrator */
