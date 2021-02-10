@@ -2,26 +2,29 @@
 
 namespace App\Database\Entities\User;
 
-use Doctrine\ORM\Mapping as ORM;
+use App\Database\Entities\Permission\Permission;
+use App\Database\Entities\Role\Role;
+use App\Database\Entities\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
-//use LaravelDoctrine\ACL\Contracts\Permission;
-//use LaravelDoctrine\ACL\Contracts\Role;
+use Doctrine\ORM\Mapping as ORM;
+use Illuminate\Auth\Passwords\CanResetPassword;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Illuminate\Support\Str;
 use LaravelDoctrine\ACL\Mappings as ACL;
 use LaravelDoctrine\ACL\Roles\HasRoles;
 use LaravelDoctrine\ACL\Permissions\HasPermissions;
 use LaravelDoctrine\ACL\Contracts\HasRoles as HasRolesContract;
-use LaravelDoctrine\ACL\Contracts\HasPermissions as HasPermissionContract;
-use App\Database\Entities\Entity;
+use LaravelDoctrine\ORM\Auth\Authenticatable;
 
 /**
  * Class User
  * @package App\Database\Entities\User
  * @ORM\Entity
  */
-class User extends Entity implements HasRolesContract, HasPermissionContract
+class User extends Entity implements HasRolesContract, AuthenticatableContract, CanResetPasswordContract
 {
-    use HasRoles;
-    use HasPermissions;
+    use HasRoles, HasPermissions, Authenticatable, CanResetPassword;
 
     /**
      * Username
@@ -57,14 +60,9 @@ class User extends Entity implements HasRolesContract, HasPermissionContract
 
     /**
      * @ACL\HasRoles()
-     * @var \Doctrine\Common\Collections\ArrayCollection|\LaravelDoctrine\ACL\Contracts\Role[]
+     * @var ArrayCollection|\LaravelDoctrine\ACL\Contracts\Role[]
      */
     protected $roles;
-
-    /**
-     * @ACL\HasPermissions
-     */
-    public $permissions;
 
     /**
      * User constructor.
@@ -81,7 +79,7 @@ class User extends Entity implements HasRolesContract, HasPermissionContract
         $this->setLastName($lastName);
 
         $this->roles = new ArrayCollection();
-        $this->permissions = new ArrayCollection();
+        //$this->permissions = new ArrayCollection();
     }
 
     /**
@@ -98,7 +96,7 @@ class User extends Entity implements HasRolesContract, HasPermissionContract
     public function setUsername(string $username): void
     {
         if (empty($username)) {
-            throw new \Exception("Username is required.");
+            throw new \RuntimeException("Username is required.");
         }
 
         $this->username = $username;
@@ -118,7 +116,7 @@ class User extends Entity implements HasRolesContract, HasPermissionContract
     public function setPassword(string $password): void
     {
         if (empty($password)) {
-            throw new \Exception("Password is required.");
+            throw new \RuntimeException("Password is required.");
         }
 
         $this->password = password_hash($password, PASSWORD_BCRYPT); // bcrypt($password);
@@ -138,10 +136,10 @@ class User extends Entity implements HasRolesContract, HasPermissionContract
     public function setFirstName(string $firstName): void
     {
         if (empty($firstName)) {
-            throw new \Exception("First Name is required.");
+            throw new \RuntimeException("First Name is required.");
         }
 
-        $this->firstName = $firstName;
+        $this->firstName = Str::ucfirst($firstName);
     }
 
     /**
@@ -154,23 +152,73 @@ class User extends Entity implements HasRolesContract, HasPermissionContract
 
     /**
      * @param string $lastName
+     * @throws \Exception
      */
     public function setLastName(string $lastName): void
     {
         if (empty($lastName)) {
-            throw new \Exception("Last Name is required.");
+            throw new \RuntimeException("Last Name is required.");
         }
 
-        $this->lastName = $lastName;
+        $this->lastName = Str::ucfirst($lastName);
     }
 
+    /**
+     * @return ArrayCollection|\LaravelDoctrine\ACL\Contracts\Role[]
+     */
     public function getRoles()
     {
-        // TODO: Implement getRoles() method.
+        return $this->roles;
     }
 
-    public function getPermissions()
+    /**
+     * @return array|string[]
+     */
+    public function getRoleNames(): array
     {
-        // TODO: Implement getPermissions() method.
+        return array_map(
+            static function (Role $role) {
+                return $role->getName();
+            },
+            $this->roles->toArray()
+        );
+    }
+
+    /**
+     * @param array $roles
+     */
+    public function updateRoleTo(array $roles): void
+    {
+        foreach ($this->roles as $aRole) {
+            $this->roles->removeElement($aRole);
+        }
+
+        foreach ($roles as $aRole) {
+            $this->roles->add($aRole);
+        }
+    }
+
+    /**
+     * @param array $roles
+     */
+    public function setRoles(array $roles): void
+    {
+        foreach ($roles as $role) {
+            $this->roles->add($role);
+        }
+    }
+
+    /**
+     * @param Role $role
+     * @return string[]
+     */
+    public function getPermissionNamesByRole(Role $role): array
+    {
+        return array_map(
+            function (Permission $permission) {
+                return $permission->getName();
+            },
+            $role->getPermissions()->toArray()
+        );
     }
 }

@@ -7,7 +7,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use LaravelDoctrine\ACL\Mappings as ACL;
 use LaravelDoctrine\ACL\Contracts\Permission;
 use LaravelDoctrine\ACL\Contracts\Role as RoleContract;
-use LaravelDoctrine\ACL\Contracts\HasPermissions as HasPermissionContract;
 use LaravelDoctrine\ACL\Permissions\HasPermissions;
 
 /**
@@ -59,15 +58,6 @@ class Role implements RoleContract
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * @param string $permission
-     * @return bool|void
-     */
-    public function hasPermissionTo($permission)
-    {
-        // TODO: Implement hasPermissionTo() method.
     }
 
     /**
