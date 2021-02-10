@@ -15,12 +15,12 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class NetworkAddress extends Entity
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
+//    /**
+//     * @ORM\Id
+//     * @ORM\Column(type="integer")
+//     * @ORM\GeneratedValue(strategy="AUTO")
+//     */
+//    protected $id;
 
     /**
      * String Representation of IPV4 or IPV6
