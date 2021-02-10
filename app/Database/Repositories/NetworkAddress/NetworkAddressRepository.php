@@ -38,6 +38,7 @@ class NetworkAddressRepository extends EntityRepository implements NetworkAddres
      *
      * @param string $ipAddress
      * @return mixed
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function findByIPAddress(string $ipAddress)
     {
@@ -47,7 +48,7 @@ class NetworkAddressRepository extends EntityRepository implements NetworkAddres
             ->where('networkAddress.ipAddress IN (:pIpAddress)')
             ->setParameter('pIpAddress', $ipAddress)
             ->getQuery()
-            ->getResult()
+            ->getOneOrNullResult()
         ;
     }
 }

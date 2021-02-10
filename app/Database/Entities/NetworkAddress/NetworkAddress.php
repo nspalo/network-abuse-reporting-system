@@ -75,7 +75,8 @@ class NetworkAddress extends Entity
     }
 
     /**
-     * NetworkAddress' IP Address value
+     * Get the Network's IP Address value
+     * - Supports IPV4 and IPV6
      *
      * @return mixed
      */
@@ -85,6 +86,9 @@ class NetworkAddress extends Entity
     }
 
     /**
+     *  Set the Network's IP Address value
+     * - Supports IPV4 and IPV6
+     *
      * @param string $ipAddress
      */
     public function setIpAddress(string $ipAddress): void
@@ -97,6 +101,8 @@ class NetworkAddress extends Entity
     }
 
     /**
+     * Get Abuse Reports
+     *
      * @return AbuseReport[]|ArrayCollection
      */
     public function getAbuseReports()
@@ -105,9 +111,11 @@ class NetworkAddress extends Entity
     }
 
     /**
+     * Add new Abuse Report
+     *
      * @param $abuseReport
      */
-    public function setAbuseReports($abuseReport): void
+    public function addAbuseReports($abuseReport): void
     {
         if(empty($abuseReport)) {
             throw new \RuntimeException('Invalid Abuse Report');

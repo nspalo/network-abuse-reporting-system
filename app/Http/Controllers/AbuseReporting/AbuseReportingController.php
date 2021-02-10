@@ -8,7 +8,10 @@ use App\Database\Repositories\AbuseReports\AbuseReportRepositoryInterface;
 use App\Database\Repositories\NetworkAddress\NetworkAddressRepositoryInterface;
 use App\Database\Repositories\User\UserRepositoryInterface;
 use App\Http\Controllers\NetworkAbuseReportingSystemController;
+use App\Http\Requests\NetworkAbuseReport\NetworkAbuseReportRequest;
+use App\Services\NetworkAbuseReporting\NetworkAbuseReportingService;
 use Doctrine\ORM\EntityManager;
+use Illuminate\Http\JsonResponse;
 
 /**
  * Class AbuseReportingController
@@ -28,6 +31,10 @@ class AbuseReportingController extends NetworkAbuseReportingSystemController
      * @var AbuseReportRepositoryInterface
      */
     private $userRepository;
+    /**
+     * @var NetworkAbuseReportingService
+     */
+    private $networkAbuseReportingService;
 
     /**
      * AbuseReportingController constructor.
@@ -35,21 +42,27 @@ class AbuseReportingController extends NetworkAbuseReportingSystemController
      * @param NetworkAddressRepositoryInterface $IPAddressRepository
      * @param AbuseReportRepositoryInterface $abuseReportRepository
      * @param UserRepositoryInterface $userRepository
+     * @param NetworkAbuseReportingService $networkAbuseReportingService
      */
     public function __construct(
         EntityManager $entityManager,
         NetworkAddressRepositoryInterface $IPAddressRepository,
         AbuseReportRepositoryInterface $abuseReportRepository,
-        UserRepositoryInterface $userRepository
+        UserRepositoryInterface $userRepository,
+        NetworkAbuseReportingService $networkAbuseReportingService
     )
     {
         parent::__construct($entityManager);
         $this->IPAddressRepository = $IPAddressRepository;
         $this->abuseReportRepository = $abuseReportRepository;
         $this->userRepository = $userRepository;
+        $this->networkAbuseReportingService = $networkAbuseReportingService;
     }
 
-    public function checkReportByIP()
+    /**
+     * @return JsonResponse
+     */
+    public function checkReportByIP(): JsonResponse
     {
         $reports = $this->abuseReportRepository->findReportByIp('124.6.181.20');
         $abuseReports = [];
@@ -87,5 +100,21 @@ class AbuseReportingController extends NetworkAbuseReportingSystemController
         ]);
     }
 
+    /**
+     * @param NetworkAbuseReportRequest $networkAbuseReportRequest
+     * @return JsonResponse
+     * @throws \Doctrine\ORM\ORMException
+     */
+    public function reportNetworkAbuse(NetworkAbuseReportRequest $networkAbuseReportRequest): JsonResponse
+    {
+        $abuseReport = $this->networkAbuseReportingService->handle($networkAbuseReportRequest);
+        $this->entityManager->flush();
+        $this->entityManager->refresh($abuseReport);
+
+        return response()->json([
+            'success' => true,
+            'recordId' => $abuseReport->getId(),
+        ]);
+    }
 
 }

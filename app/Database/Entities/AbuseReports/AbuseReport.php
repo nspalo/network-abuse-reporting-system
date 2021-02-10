@@ -55,7 +55,7 @@ class AbuseReport extends Entity
      * @param string $comment
      * @param User|null $reporter
      */
-    public function __construct(NetworkAddress $ipAddress, string $comment, ?User $reporter)
+    public function __construct(NetworkAddress $ipAddress, string $comment, ?User $reporter = null)
     {
         $this->setIpAddress($ipAddress);
         $this->setComment($comment);
