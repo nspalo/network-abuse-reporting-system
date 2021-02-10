@@ -62,6 +62,10 @@ class UserRenderer extends AbstractRender
      */
     public function render($user): array
     {
+        if(is_null($user)) {
+            return [];
+        }
+
         if($user instanceof User) {
 
             return [

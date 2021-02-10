@@ -41,14 +41,17 @@ class UserController extends NetworkAbuseReportingSystemController
     }
 
     /**
+     * @param string|null $username
      * @return JsonResponse
      */
-    public function index(): JsonResponse
+    public function index(string $username = null): JsonResponse
     {
         return response()->json([
             'users' => $this->userRenderer->render(
-                $this->userRepository->findAllUser()
-            )
+                    (empty($username)) ?
+                        $this->userRepository->findAllUser()
+                        : $this->userRepository->findByUsername($username)
+                )
         ]);
     }
 }

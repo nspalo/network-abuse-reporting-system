@@ -38,13 +38,6 @@ class UserRegistrationController extends Controller
         $this->userRegistrationService = $userRegistrationService;
     }
 
-
-    public function index()
-    {
-        // Test route
-        dd("UserRegistrationController::index()");
-    }
-
     /**
      * @param UserRegistrationRequest $userRegistrationRequest
      * @return JsonResponse
