@@ -30,5 +30,14 @@ interface AbuseReportRepositoryInterface
      * @param string $ipAddress
      * @return mixed
      */
-    public function findReportByIP(string $ipAddress);
+    public function findReportByIp(string $ipAddress);
+
+
+    /**
+     * Find Reporter Id
+     *
+     * @param string $reporterId
+     * @return mixed
+     */
+    public function findReportsByUserId(string $reporterId);
 }

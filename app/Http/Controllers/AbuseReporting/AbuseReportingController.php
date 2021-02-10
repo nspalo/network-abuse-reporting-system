@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\AbuseReporting;
 
 use App\Database\Entities\AbuseReports\AbuseReport;
+use App\Database\Entities\User\User;
 use App\Database\Repositories\AbuseReports\AbuseReportRepositoryInterface;
 use App\Database\Repositories\NetworkAddress\NetworkAddressRepositoryInterface;
+use App\Database\Repositories\User\UserRepositoryInterface;
 use App\Http\Controllers\NetworkAbuseReportingSystemController;
 use Doctrine\ORM\EntityManager;
 
@@ -22,27 +24,34 @@ class AbuseReportingController extends NetworkAbuseReportingSystemController
      * @var AbuseReportRepositoryInterface
      */
     private $abuseReportRepository;
+    /**
+     * @var AbuseReportRepositoryInterface
+     */
+    private $userRepository;
 
     /**
      * AbuseReportingController constructor.
      * @param EntityManager $entityManager
      * @param NetworkAddressRepositoryInterface $IPAddressRepository
      * @param AbuseReportRepositoryInterface $abuseReportRepository
+     * @param UserRepositoryInterface $userRepository
      */
     public function __construct(
         EntityManager $entityManager,
         NetworkAddressRepositoryInterface $IPAddressRepository,
-        AbuseReportRepositoryInterface  $abuseReportRepository
+        AbuseReportRepositoryInterface $abuseReportRepository,
+        UserRepositoryInterface $userRepository
     )
     {
         parent::__construct($entityManager);
         $this->IPAddressRepository = $IPAddressRepository;
         $this->abuseReportRepository = $abuseReportRepository;
+        $this->userRepository = $userRepository;
     }
 
     public function checkReportByIP()
     {
-        $reports = $this->abuseReportRepository->findReportByIP('124.6.181.20');
+        $reports = $this->abuseReportRepository->findReportByIp('124.6.181.20');
         $abuseReports = [];
 
         /** @var AbuseReport $report */
@@ -50,12 +59,31 @@ class AbuseReportingController extends NetworkAbuseReportingSystemController
             $abuseReports[] = [
                 'ip' => $report->getIpAddress(),
                 'comment' => $report->getComment(),
+                'reporter' => ($report->getReporter())?$report->getReporter()->getUsername() : []
             ];
         }
 
+
+        /** @var User $user */
+        $user = $this->userRepository->findByUsername('jdoe');
+        $userReports = $this->abuseReportRepository->findReportsByUserId($user->getId());
+        $reports = [];
+
+        foreach ($userReports as $report) {
+            $reports[$user->getUsername()][] = [
+                "ipAddress" => $report->getIpAddress(),
+                "comment" => $report->getComment()
+            ];
+            //dump($report);
+        }
+
+        //dd($userReports);
+
+
         return response()->json([
             'success' => true,
-            'reports' => $abuseReports
+            'reports' => $abuseReports,
+            'userReports' => $reports
         ]);
     }
 

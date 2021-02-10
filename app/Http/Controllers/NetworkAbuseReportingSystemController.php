@@ -13,7 +13,7 @@ class NetworkAbuseReportingSystemController extends Controller
     /**
      * @var EntityManager
      */
-    private $entityManager;
+    protected $entityManager;
 
     public function __construct(EntityManager $entityManager) {
         $this->entityManager = $entityManager;

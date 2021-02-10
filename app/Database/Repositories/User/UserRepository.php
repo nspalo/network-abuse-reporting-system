@@ -62,4 +62,23 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
             ->getResult()
         ;
     }
+
+    /**
+     * Find User By Username
+     *
+     * @param string $username
+     * @return int|mixed|string|null
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function findByUsername(string $username)
+    {
+        return $this->getEntityManager()->createQueryBuilder()
+            ->select("users")
+            ->from(User::class, 'users')
+            ->where('users.username = :pUsername')
+            ->setParameter('pUsername', $username)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 }

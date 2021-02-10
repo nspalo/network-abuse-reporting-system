@@ -39,4 +39,12 @@ interface UserRepositoryInterface
      * @return mixed
      */
     public function findByRole($roles);
+
+    /**
+     * Find User By Username
+     *
+     * @param string $username
+     * @return int|mixed|string
+     */
+    public function findByUsername(string $username);
 }

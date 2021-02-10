@@ -4,6 +4,7 @@ namespace App\Database\Repositories\AbuseReports;
 
 use App\Database\Entities\AbuseReports\AbuseReport;
 use App\Database\Entities\NetworkAddress\NetworkAddress;
+use App\Database\Entities\User\User;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -40,7 +41,7 @@ class AbuseReportRepository extends EntityRepository implements AbuseReportRepos
      * @param string $ipAddress
      * @return mixed
      */
-    public function findReportByIP(string $ipAddress)
+    public function findReportByIp(string $ipAddress)
     {
         return $this->getEntityManager()->createQueryBuilder()
             ->select("abuseReports")
@@ -52,5 +53,25 @@ class AbuseReportRepository extends EntityRepository implements AbuseReportRepos
             ->getQuery()
             ->getResult()
         ;
+    }
+
+    /**
+     * Find Reporter Id
+     *
+     * @param string $reporterId
+     * @return mixed
+     */
+    public function findReportsByUserId(string $reporterId)
+    {
+        return $this->getEntityManager()->createQueryBuilder()
+            ->select("abuseReports")
+            ->from(AbuseReport::class, 'abuseReports')
+            ->join(User::class, 'reporter')
+            ->where('abuseReports.reporter = reporter.id')
+            ->AndWhere('reporter.id = :pReporterId')
+            ->setParameter('pReporterId', $reporterId)
+            ->getQuery()
+            ->getResult()
+            ;
     }
 }
