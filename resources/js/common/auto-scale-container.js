@@ -6,8 +6,8 @@
 /**
  * Variables
  */
-let containerHeaderHeight = 104,
-    containerFooterHeight = 104,
+let containerHeaderHeight = 80,
+    containerFooterHeight = 72,
     containerOffsetHeight = containerHeaderHeight + containerFooterHeight,
     containerId = "#page-body";
 

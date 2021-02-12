@@ -16,6 +16,5 @@ mix
     .js('resources/js/common/auto-scale-container.js', 'public/js/common')
     .js('resources/js/common/bootstrap-form-validator.js', 'public/js/common')
     .js('resources/js/abuse-report/create.js', 'public/js/abuse-report')
-    // .sass('resources/sass/app.scss', 'public/css')
     .sass('resources/sass/style.scss', 'public/css')
 ;
