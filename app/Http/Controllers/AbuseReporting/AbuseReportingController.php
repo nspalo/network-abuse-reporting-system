@@ -13,8 +13,11 @@ use App\Renderers\AbuseReport\AbuseReportRenderer;
 use App\Renderers\NetworkAddress\NetworkAddressRenderer;
 use App\Services\NetworkAbuseReporting\NetworkAbuseReportingService;
 use Doctrine\ORM\EntityManager;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 /**
  * Class AbuseReportingController
@@ -136,6 +139,14 @@ class AbuseReportingController extends NetworkAbuseReportingSystemController
         return response()->json([
             'recordId' => $abuseReport->getId(),
         ]);
+    }
+
+    /**
+     * @return Application|Factory|View
+     */
+    public function reportNetworkAbuseForm()
+    {
+        return view('layouts.main');
     }
 
 }
