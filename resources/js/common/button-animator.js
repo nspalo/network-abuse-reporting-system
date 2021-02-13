@@ -32,11 +32,19 @@ export default class buttonAnimator {
     /**
      * Stop the animation
      */
-    stop() {
-        let buttonContent = this.buttonObj.attr('data-text');
-        this.buttonObj.html(buttonContent);
-        this.buttonObj.removeClass('animating');
-        this.buttonObj.attr('disabled',false);
+    stop(timeout) {
+
+        if(timeout===undefined) {
+            timeout = 1000;
+        }
+
+        // Set timer for auto dismissal
+        setTimeout(() => {
+            let buttonContent = this.buttonObj.attr('data-text');
+            this.buttonObj.html(buttonContent);
+            this.buttonObj.removeClass('animating');
+            this.buttonObj.attr('disabled',false);
+        }, timeout);
     }
 
     /**

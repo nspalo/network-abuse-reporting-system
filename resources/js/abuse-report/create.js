@@ -17,21 +17,17 @@ $(function() {
             return;
         }
 
+        // Show loading animation
+        form.buttonAnimation.start();
+
         if(form.validate()) {
-
-            // Show loading animation
-            form.buttonAnimation.start();
-
-            // notifier.success.notify('hello', 'info');
-
             // Save the data
-            //save(form.data(), routeUrl, btnAnimate);
             store(form);
 
         } else {
-            // do nothing
+            // Do nothing, show warning
             form.transaction.warning.notify('Invalid Form Input(s).');
-            console.log('invalid form input(s)');
+            form.buttonAnimation.stop();
         }
     });
 });
