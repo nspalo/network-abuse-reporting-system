@@ -1,51 +1,37 @@
 /**
  * Create Abuse Report
  */
-import buttonAnimator from "../common/button-animator";
 import formHelper from "../common/form-helpers";
+import NotificationHelper from "../common/notification-helper";
+import {store} from "../common/axios-helper"
 
 $(function() {
 
     $("#abuseReport button").on('click', function (event) {
         event.preventDefault();
 
-        let routeUrl   = "/network-abuse/report";
-        let btnAnimate = new buttonAnimator($(event.currentTarget));
         let form       = new formHelper(event);
+            form.route = "/network-abuse/report";
 
-        console.log(btnAnimate);
-
-        if(btnAnimate.isAnimated()) {
+        if(form.buttonAnimation.isAnimating()) {
             return;
         }
 
-        // if(isFormValidated(formId)) {
         if(form.validate()) {
 
             // Show loading animation
-            btnAnimate.start();
+            form.buttonAnimation.start();
 
-            axios.post(routeUrl, form.data())
-            .then(function (response) {
-                // DevExpress.ui.notify('The record has been created.', 'success', 2000);
+            // notifier.success.notify('hello', 'info');
 
-                // Remove loading animation
-                btnAnimate.stop();
-
-                // refresh
-                // window.location = '/network-abuse/report';
-                window.location.reload();
-                console.log(response);
-            })
-            .catch(function (error) {
-                // Display Errors
-                console.log(error);
-            });
+            // Save the data
+            //save(form.data(), routeUrl, btnAnimate);
+            store(form);
 
         } else {
             // do nothing
+            form.transaction.warning.notify('Invalid Form Input(s).');
             console.log('invalid form input(s)');
         }
     });
-
 });
