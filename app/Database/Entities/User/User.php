@@ -8,6 +8,7 @@ use App\Database\Entities\Entity;
 use App\Traits\PasswordEncryption;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
@@ -26,6 +27,14 @@ use LaravelDoctrine\ORM\Auth\Authenticatable;
 class User extends Entity implements HasRolesContract, AuthenticatableContract, CanResetPasswordContract
 {
     use HasRoles, HasPermissions, Authenticatable, CanResetPassword, PasswordEncryption;
+
+    /**
+     * Email Address
+     *
+     * @ORM\Column(name="email_address", type="string", length=128, unique=true, nullable=false)
+     * @var string
+     */
+    protected $emailAddress;
 
     /**
      * Username
@@ -60,27 +69,60 @@ class User extends Entity implements HasRolesContract, AuthenticatableContract, 
     protected $lastName;
 
     /**
+     * User Roles
+     *
      * @ACL\HasRoles()
-     * @var ArrayCollection|\LaravelDoctrine\ACL\Contracts\Role[]
+     * @var ArrayCollection|Role[]
      */
     protected $roles;
 
     /**
      * User constructor.
+     * @param string $emailAddress
      * @param string $username
      * @param string $password
      * @param string $firstName
      * @param string $lastName
+     * @throws Exception
      */
-    public function __construct(string $username, string $password, string $firstName, string $lastName)
+    public function __construct(string $emailAddress, string $username, string $password, string $firstName, string $lastName)
     {
+        $this->setEmailAddress($emailAddress);
         $this->setUsername($username);
         $this->setPassword($password);
         $this->setFirstName($firstName);
         $this->setLastName($lastName);
 
         $this->roles = new ArrayCollection();
-        //$this->permissions = new ArrayCollection();
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmailAddress(): string
+    {
+        return $this->emailAddress;
+    }
+
+    /**
+     * Set User email
+     * @param string $emailAddress
+     */
+    public function setEmailAddress(string $emailAddress): void
+    {
+        if (empty($emailAddress)) {
+            throw new \RuntimeException('Email address cannot be empty.');
+        }
+
+        if (strlen($emailAddress) > 128) {
+            throw new \RuntimeException('Email address was more than 128 characters.');
+        }
+
+        if (! filter_var($emailAddress, FILTER_VALIDATE_EMAIL)) {
+            throw new \RuntimeException('Email address is not valid.');
+        }
+
+        $this->emailAddress = $emailAddress;
     }
 
     /**
@@ -153,7 +195,7 @@ class User extends Entity implements HasRolesContract, AuthenticatableContract, 
 
     /**
      * @param string $lastName
-     * @throws \Exception
+     * @throws Exception
      */
     public function setLastName(string $lastName): void
     {
@@ -165,7 +207,7 @@ class User extends Entity implements HasRolesContract, AuthenticatableContract, 
     }
 
     /**
-     * @return ArrayCollection|\LaravelDoctrine\ACL\Contracts\Role[]
+     * @return ArrayCollection|Role[]
      */
     public function getRoles()
     {

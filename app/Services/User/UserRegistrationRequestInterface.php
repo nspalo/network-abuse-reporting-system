@@ -8,6 +8,7 @@ namespace App\Services\User;
  */
 interface UserRegistrationRequestInterface
 {
+    public function getEmailAddress();
     public function getUsername();
     public function getPassword();
     public function getFirstName();

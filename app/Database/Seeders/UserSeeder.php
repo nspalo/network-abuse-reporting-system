@@ -29,6 +29,7 @@ class UserSeeder extends Seeder
         /** Create a Default User */
         DB::table('users')->insert([
             'id' => $userId,
+            'email_address' => 'jdoe@example.com',
             'username' => 'sysAdmin',
             'password' => $this->encryptWithBcrypt($defaultPassword),//password_hash('1234567890', PASSWORD_BCRYPT),
             'first_name' => 'John',

@@ -66,10 +66,10 @@ class User extends \App\Database\Entities\User\User implements \Doctrine\ORM\Pro
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', 'username', 'password', 'firstName', 'lastName', 'roles', 'id', 'createdAt', 'updatedAt', 'rememberToken'];
+            return ['__isInitialized__', 'emailAddress', 'username', 'password', 'firstName', 'lastName', 'roles', 'id', 'createdAt', 'updatedAt', 'rememberToken'];
         }
 
-        return ['__isInitialized__', 'username', 'password', 'firstName', 'lastName', 'roles', 'id', 'createdAt', 'updatedAt', 'rememberToken'];
+        return ['__isInitialized__', 'emailAddress', 'username', 'password', 'firstName', 'lastName', 'roles', 'id', 'createdAt', 'updatedAt', 'rememberToken'];
     }
 
     /**
@@ -176,6 +176,28 @@ class User extends \App\Database\Entities\User\User implements \Doctrine\ORM\Pro
     }
 
     
+    /**
+     * {@inheritDoc}
+     */
+    public function getEmailAddress(): string
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEmailAddress', []);
+
+        return parent::getEmailAddress();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setEmailAddress(string $emailAddress): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEmailAddress', [$emailAddress]);
+
+        parent::setEmailAddress($emailAddress);
+    }
+
     /**
      * {@inheritDoc}
      */

@@ -2,11 +2,11 @@
 
 namespace App\Services\User;
 
-use App\Database\Entities\Role\Role;
 use App\Database\Entities\User\User;
 use App\Database\Repositories\Role\RoleRepositoryInterface;
 use App\Services\AbstractService;
 use Doctrine\ORM\EntityManager;
+use Exception;
 
 /**
  * Class UserRegistrationService
@@ -35,11 +35,13 @@ class UserRegistrationService extends AbstractService
      *
      * @param UserRegistrationRequestInterface $userRegistrationRequest
      * @return User
+     * @throws Exception
      */
     public function handle(UserRegistrationRequestInterface $userRegistrationRequest): User
     {
         /** Create New User */
         $user = new User(
+            $userRegistrationRequest->getEmailAddress(),
             $userRegistrationRequest->getUsername(),
             $userRegistrationRequest->getPassword(),
             $userRegistrationRequest->getFirstName(),
