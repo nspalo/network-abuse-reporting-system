@@ -2,14 +2,14 @@
 
 namespace App\Http\Requests\User;
 
-use App\Services\User\UserRegistrationRequestInterface;
+use App\Services\User\CreateUserRequestInterface;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
  * Class UserRegistrationRequest
  * @package App\Http\Requests\User
  */
-class UserRegistrationRequest extends FormRequest implements UserRegistrationRequestInterface
+class CreateUserRequest extends FormRequest implements CreateUserRequestInterface
 {
     /**
      * @return bool

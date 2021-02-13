@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\User\UserRegistrationRequest;
-use App\Services\User\UserRegistrationService;
+use App\Http\Requests\User\CreateUserRequest;
+use App\Services\User\CreateUserService;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
+use Exception;
 use Illuminate\Http\JsonResponse;
 
 /**
@@ -21,31 +22,31 @@ class UserRegistrationController extends Controller
      */
     private $entityManager;
     /**
-     * @var UserRegistrationService
+     * @var CreateUserService
      */
     private $userRegistrationService;
 
     /**
      * UserController constructor.
      * @param EntityManager $entityManager
-     * @param UserRegistrationService $userRegistrationService
+     * @param CreateUserService $userRegistrationService
      */
     public function __construct(
         EntityManager $entityManager,
-        UserRegistrationService $userRegistrationService
+        CreateUserService $userRegistrationService
     ) {
         $this->entityManager = $entityManager;
         $this->userRegistrationService = $userRegistrationService;
     }
 
     /**
-     * @param UserRegistrationRequest $userRegistrationRequest
+     * @param CreateUserRequest $userRegistrationRequest
      * @return JsonResponse
      * @throws ORMException
      * @throws OptimisticLockException
-     * @throws \Illuminate\Validation\ValidationException
+     * @throws Exception
      */
-    public function store(UserRegistrationRequest $userRegistrationRequest): JsonResponse
+    public function store(CreateUserRequest $userRegistrationRequest): JsonResponse
     {
 
         $user = $this->userRegistrationService->handle($userRegistrationRequest);

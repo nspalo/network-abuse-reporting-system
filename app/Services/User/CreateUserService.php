@@ -12,7 +12,7 @@ use Exception;
  * Class UserRegistrationService
  * @package App\Services\User
  */
-class UserRegistrationService extends AbstractService
+class CreateUserService extends AbstractService
 {
     /**
      * @var RoleRepositoryInterface
@@ -33,11 +33,11 @@ class UserRegistrationService extends AbstractService
     /**
      * Process user Registration
      *
-     * @param UserRegistrationRequestInterface $userRegistrationRequest
+     * @param CreateUserRequestInterface $userRegistrationRequest
      * @return User
      * @throws Exception
      */
-    public function handle(UserRegistrationRequestInterface $userRegistrationRequest): User
+    public function handle(CreateUserRequestInterface $userRegistrationRequest): User
     {
         /** Create New User */
         $user = new User(
