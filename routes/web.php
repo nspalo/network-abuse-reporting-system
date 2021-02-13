@@ -11,9 +11,9 @@
 |
 */
 
-Route::get('/', function () {
-    return view('layouts.main');
-});
+//Route::get('/', function () {
+//    return view('layouts.main');
+//});
 
 Route::group(['prefix' => 'users'], function () {
 
@@ -36,6 +36,7 @@ Route::group(['prefix' => 'network-abuse'], function () {
      * Reporting
      */
     Route::post('/report', 'AbuseReporting\AbuseReportingController@reportNetworkAbuse');
+    Route::get('/report', 'AbuseReporting\AbuseReportingController@reportNetworkAbuseForm');
 
     /**
      * View Records

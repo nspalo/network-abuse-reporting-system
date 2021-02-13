@@ -11,7 +11,10 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/js/app.js', 'public/js')
-    // .sass('resources/sass/app.scss', 'public/css')
+mix
+    .js('resources/js/app.js', 'public/js')
+    .js('resources/js/common/auto-scale-container.js', 'public/js/common')
+    // .js('resources/js/common/bootstrap-form-validator.js', 'public/js/common')
+    .js('resources/js/abuse-report/create.js', 'public/js/abuse-report')
     .sass('resources/sass/style.scss', 'public/css')
 ;
