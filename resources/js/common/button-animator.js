@@ -35,7 +35,7 @@ export default class buttonAnimator {
     stop(timeout) {
 
         if(timeout===undefined) {
-            timeout = 1000;
+            timeout = 500;
         }
 
         // Set timer for auto dismissal
