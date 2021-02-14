@@ -230,25 +230,23 @@ class User extends Entity implements HasRolesContract, AuthenticatableContract, 
     /**
      * @param array $roles
      */
-    public function updateRoleTo(array $roles): void
+    public function setRoles(array $roles): void
     {
-        foreach ($this->roles as $aRole) {
-            $this->roles->removeElement($aRole);
-        }
-
-        foreach ($roles as $aRole) {
-            $this->roles->add($aRole);
+        foreach ($roles as $role) {
+            $this->roles->add($role);
         }
     }
 
     /**
      * @param array $roles
      */
-    public function setRoles(array $roles): void
+    public function updateRoleTo(array $roles): void
     {
-        foreach ($roles as $role) {
-            $this->roles->add($role);
+        foreach ($this->roles as $aRole) {
+            $this->roles->removeElement($aRole);
         }
+
+        $this->setRoles($roles);
     }
 
     /**
@@ -264,4 +262,5 @@ class User extends Entity implements HasRolesContract, AuthenticatableContract, 
             $role->getPermissions()->toArray()
         );
     }
+
 }
