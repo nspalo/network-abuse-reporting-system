@@ -4,7 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\UpdateUserRequest;
-use App\Services\User\CreateUserService;
+use App\Services\User\UpdateUserService;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
@@ -15,40 +15,40 @@ use Illuminate\Http\JsonResponse;
  * Class UserController
  * @package App\Http\Controllers\User
  */
-class UserRegistrationController extends Controller
+class UpdateUserController extends Controller
 {
     /**
      * @var EntityManager
      */
     private $entityManager;
     /**
-     * @var CreateUserService
+     * @var UpdateUserService
      */
-    private $userRegistrationService;
+    private $updateUserService;
 
     /**
      * UserController constructor.
      * @param EntityManager $entityManager
-     * @param CreateUserService $userRegistrationService
+     * @param UpdateUserService $updateUserService
      */
     public function __construct(
         EntityManager $entityManager,
-        CreateUserService $userRegistrationService
+        UpdateUserService $updateUserService
     ) {
         $this->entityManager = $entityManager;
-        $this->userRegistrationService = $userRegistrationService;
+        $this->updateUserService = $updateUserService;
     }
 
     /**
-     * @param UpdateUserRequest $userRegistrationRequest
+     * @param UpdateUserRequest $updateUserRequest
      * @return JsonResponse
      * @throws ORMException
      * @throws OptimisticLockException
      * @throws Exception
      */
-    public function store(UpdateUserRequest $userRegistrationRequest): JsonResponse
+    public function store(UpdateUserRequest $updateUserRequest): JsonResponse
     {
-        $user = $this->userRegistrationService->handle($userRegistrationRequest);
+        $user = $this->updateUserService->handle($updateUserRequest);
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();

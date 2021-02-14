@@ -28,6 +28,12 @@ Route::group(['prefix' => 'users'], function () {
      */
     Route::get('/register', 'User\UserRegistrationController@index');
     Route::post('/register', 'User\UserRegistrationController@store');
+
+    /**
+     * Update User Details
+     */
+    Route::post('/edit', 'User\UpdateUserController@store');
+
 });
 
 Route::group(['prefix' => 'network-abuse'], function () {
