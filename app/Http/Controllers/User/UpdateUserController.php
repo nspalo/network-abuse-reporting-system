@@ -40,6 +40,14 @@ class UpdateUserController extends Controller
     }
 
     /**
+     * TODO - Implementation for the Edit form
+     */
+    public function show()
+    {
+        return view('layouts.main');
+    }
+
+    /**
      * @param UpdateUserRequest $updateUserRequest
      * @return JsonResponse
      * @throws ORMException
@@ -50,13 +58,14 @@ class UpdateUserController extends Controller
     {
         $user = $this->updateUserService->handle($updateUserRequest);
 
-        $this->entityManager->persist($user);
-        $this->entityManager->flush();
-        $this->entityManager->refresh($user);
+        if($user) {
+            $this->entityManager->persist($user);
+            $this->entityManager->flush();
+            $this->entityManager->refresh($user);
+        }
 
         return response()->json([
-            'success' => true,
-            'recordId' => $user->getId()
+            'recordId' => ($user) ? $user->getId() : [],
         ]);
     }
 }

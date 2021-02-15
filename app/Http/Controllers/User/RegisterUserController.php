@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\User\UpdateUserRequest;
+use App\Http\Requests\User\CreateUserRequest;
 use App\Services\User\CreateUserService;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\OptimisticLockException;
@@ -15,7 +15,7 @@ use Illuminate\Http\JsonResponse;
  * Class UserController
  * @package App\Http\Controllers\User
  */
-class UserRegistrationController extends Controller
+class RegisterUserController extends Controller
 {
     /**
      * @var EntityManager
@@ -40,15 +40,23 @@ class UserRegistrationController extends Controller
     }
 
     /**
-     * @param UpdateUserRequest $userRegistrationRequest
+     * TODO - Implementation for the Registration form
+     */
+    public function create()
+    {
+        return view('layouts.main');
+    }
+
+    /**
+     * @param CreateUserRequest $createUserRequest
      * @return JsonResponse
      * @throws ORMException
      * @throws OptimisticLockException
      * @throws Exception
      */
-    public function store(UpdateUserRequest $userRegistrationRequest): JsonResponse
+    public function store(CreateUserRequest $createUserRequest): JsonResponse
     {
-        $user = $this->userRegistrationService->handle($userRegistrationRequest);
+        $user = $this->userRegistrationService->handle($createUserRequest);
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();

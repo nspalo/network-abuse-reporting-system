@@ -40,10 +40,10 @@ class UpdateUserService extends AbstractService
 
     /**
      * @param UpdateUserRequestInterface $updateUserRequest
-     * @return User
+     * @return User|null
      * @throws Exception
      */
-    public function handle(UpdateUserRequestInterface $updateUserRequest): User
+    public function handle(UpdateUserRequestInterface $updateUserRequest): ?User
     {
         /** @var User $user */
         $user = $this->userRepository->findByEmailAddress($updateUserRequest->getEmailAddress());

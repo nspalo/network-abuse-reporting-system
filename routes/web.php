@@ -18,21 +18,23 @@
 Route::group(['prefix' => 'users'], function () {
 
     /**
-     * Users
-     */
-    Route::get('/', 'User\UserController@index');
-    Route::get('/{username}', 'User\UserController@index');
-
-    /**
      * Registration
      */
-    Route::get('/register', 'User\UserRegistrationController@index');
-    Route::post('/register', 'User\UserRegistrationController@store');
+    Route::get('/register', 'User\RegisterUserController@create');
+    Route::post('/register', 'User\RegisterUserController@store');
 
     /**
      * Update User Details
      */
+    Route::get('/edit/{userId}', 'User\UpdateUserController@show');
     Route::post('/edit', 'User\UpdateUserController@store');
+
+
+    /**
+     * Users
+     */
+    Route::get('/{username}', 'User\UserController@index');
+    Route::get('/', 'User\UserController@index');
 
 });
 
@@ -53,5 +55,3 @@ Route::group(['prefix' => 'network-abuse'], function () {
     Route::get('/check/user', 'AbuseReporting\AbuseReportingController@checkAbuseReportRecordByUsername');
     Route::get('/check/user/{username}', 'AbuseReporting\AbuseReportingController@checkAbuseReportRecordByUsername');
 });
-
-

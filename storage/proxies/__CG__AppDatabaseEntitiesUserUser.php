@@ -311,23 +311,23 @@ class User extends \App\Database\Entities\User\User implements \Doctrine\ORM\Pro
     /**
      * {@inheritDoc}
      */
-    public function updateRoleTo(array $roles): void
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'updateRoleTo', [$roles]);
-
-        parent::updateRoleTo($roles);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function setRoles(array $roles): void
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setRoles', [$roles]);
 
         parent::setRoles($roles);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function updateRoleTo(array $roles): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'updateRoleTo', [$roles]);
+
+        parent::updateRoleTo($roles);
     }
 
     /**
