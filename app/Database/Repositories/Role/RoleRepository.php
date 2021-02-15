@@ -11,6 +11,33 @@ use Doctrine\ORM\EntityRepository;
  */
 class RoleRepository extends EntityRepository implements RoleRepositoryInterface
 {
+    /**
+     * Find All
+     *
+     * @return array
+     */
+    public function findAll(): array
+    {
+        return parent::findAll();
+    }
+
+    /**
+     * Find Roles by Ids
+     *
+     * @param $roleIds
+     * @return array|string
+     */
+    public function findByRolesIds($roleIds)
+    {
+        return $this->getEntityManager()->createQueryBuilder()
+            ->select("roles")
+            ->from(Role::class, 'roles')
+            ->where('roles.id IN (:pRoleIds)')
+            ->setParameter('pRoleIds', $roleIds)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 
     /**
      * Find Roles by Name
