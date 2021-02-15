@@ -4,6 +4,7 @@ namespace App\Database\Repositories\User;
 
 use App\Database\Entities\User\User;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 
 /**
  * Class UserRepository
@@ -64,11 +65,30 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
     }
 
     /**
+     * Find User By Email Address
+     *
+     * @param string $emailAddress
+     * @return int|mixed|string|null
+     * @throws NonUniqueResultException
+     */
+    public function findByEmailAddress(string $emailAddress)
+    {
+        return $this->getEntityManager()->createQueryBuilder()
+            ->select("users")
+            ->from(User::class, 'users')
+            ->where('users.emailAddress = :pEmailAddress')
+            ->setParameter('pEmailAddress', $emailAddress)
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
+
+    /**
      * Find User By Username
      *
      * @param string $username
      * @return int|mixed|string|null
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     public function findByUsername(string $username)
     {

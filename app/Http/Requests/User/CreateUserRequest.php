@@ -2,20 +2,19 @@
 
 namespace App\Http\Requests\User;
 
-use App\Services\User\UserRegistrationRequestInterface;
+use App\Services\User\CreateUserRequestInterface;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Validator;
 
 /**
  * Class UserRegistrationRequest
  * @package App\Http\Requests\User
  */
-class UserRegistrationRequest extends FormRequest implements UserRegistrationRequestInterface
+class CreateUserRequest extends FormRequest implements CreateUserRequestInterface
 {
     /**
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -23,14 +22,23 @@ class UserRegistrationRequest extends FormRequest implements UserRegistrationReq
     /**
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-            'username' => 'string|required',
-            'password' => 'string|min:8',
-            'firstname' => 'string|required',
-            'lastname' => 'string|required'
+            'emailAddress' => 'required|string|email',
+            'username' => 'required|string',
+            'password' => 'required|string|min:8',
+            'firstname' => 'required|string',
+            'lastname' => 'required|string'
         ];
+    }
+
+    /**
+     * @return array|string|null
+     */
+    public function getEmailAddress()
+    {
+        return $this->input('emailAddress');
     }
 
     /**

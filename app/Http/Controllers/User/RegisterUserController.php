@@ -3,52 +3,60 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\User\UserRegistrationRequest;
-use App\Services\User\UserRegistrationService;
+use App\Http\Requests\User\CreateUserRequest;
+use App\Services\User\CreateUserService;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
+use Exception;
 use Illuminate\Http\JsonResponse;
 
 /**
  * Class UserController
  * @package App\Http\Controllers\User
  */
-class UserRegistrationController extends Controller
+class RegisterUserController extends Controller
 {
     /**
      * @var EntityManager
      */
     private $entityManager;
     /**
-     * @var UserRegistrationService
+     * @var CreateUserService
      */
     private $userRegistrationService;
 
     /**
      * UserController constructor.
      * @param EntityManager $entityManager
-     * @param UserRegistrationService $userRegistrationService
+     * @param CreateUserService $userRegistrationService
      */
     public function __construct(
         EntityManager $entityManager,
-        UserRegistrationService $userRegistrationService
+        CreateUserService $userRegistrationService
     ) {
         $this->entityManager = $entityManager;
         $this->userRegistrationService = $userRegistrationService;
     }
 
     /**
-     * @param UserRegistrationRequest $userRegistrationRequest
+     * TODO - Implementation for the Registration form
+     */
+    public function create()
+    {
+        return view('layouts.main');
+    }
+
+    /**
+     * @param CreateUserRequest $createUserRequest
      * @return JsonResponse
      * @throws ORMException
      * @throws OptimisticLockException
-     * @throws \Illuminate\Validation\ValidationException
+     * @throws Exception
      */
-    public function store(UserRegistrationRequest $userRegistrationRequest): JsonResponse
+    public function store(CreateUserRequest $createUserRequest): JsonResponse
     {
-
-        $user = $this->userRegistrationService->handle($userRegistrationRequest);
+        $user = $this->userRegistrationService->handle($createUserRequest);
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();

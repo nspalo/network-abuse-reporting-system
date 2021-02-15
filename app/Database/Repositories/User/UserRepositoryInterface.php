@@ -40,6 +40,15 @@ interface UserRepositoryInterface
      */
     public function findByRole($roles);
 
+
+    /**
+     * Find User By Email Address
+     *
+     * @param string $emailAddress
+     * @return int|mixed|string|null
+     */
+    public function findByEmailAddress(string $emailAddress);
+
     /**
      * Find User By Username
      *

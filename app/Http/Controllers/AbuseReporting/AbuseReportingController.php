@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers\AbuseReporting;
 
-use App\Database\Entities\AbuseReports\AbuseReport;
-use App\Database\Entities\User\User;
 use App\Database\Repositories\AbuseReports\AbuseReportRepositoryInterface;
 use App\Database\Repositories\NetworkAddress\NetworkAddressRepositoryInterface;
 use App\Database\Repositories\User\UserRepositoryInterface;
@@ -13,8 +11,11 @@ use App\Renderers\AbuseReport\AbuseReportRenderer;
 use App\Renderers\NetworkAddress\NetworkAddressRenderer;
 use App\Services\NetworkAbuseReporting\NetworkAbuseReportingService;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\ORMException;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 /**
  * Class AbuseReportingController
@@ -125,7 +126,7 @@ class AbuseReportingController extends NetworkAbuseReportingSystemController
      *
      * @param NetworkAbuseReportRequest $networkAbuseReportRequest
      * @return JsonResponse
-     * @throws \Doctrine\ORM\ORMException
+     * @throws ORMException
      */
     public function reportNetworkAbuse(NetworkAbuseReportRequest $networkAbuseReportRequest): JsonResponse
     {
@@ -136,6 +137,14 @@ class AbuseReportingController extends NetworkAbuseReportingSystemController
         return response()->json([
             'recordId' => $abuseReport->getId(),
         ]);
+    }
+
+    /**
+     * @return Application|Factory|View
+     */
+    public function reportNetworkAbuseForm()
+    {
+        return view('abuse-reporting.create-abuse-report');
     }
 
 }

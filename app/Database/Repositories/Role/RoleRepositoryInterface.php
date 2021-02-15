@@ -1,12 +1,27 @@
 <?php
 
-
 namespace App\Database\Repositories\Role;
 
-
+/**
+ * Interface RoleRepositoryInterface
+ * @package App\Database\Repositories\Role
+ */
 interface RoleRepositoryInterface
 {
-    public function findAll();
+    /**
+     * Find All
+     *
+     * @return array
+     */
+    public function findAll(): array;
+
+    /**
+     * Find Roles by Ids
+     *
+     * @param $roleIds
+     * @return array|string
+     */
+    public function findByRolesIds($roleIds);
 
     /**
      * @param array|string $roleNames
