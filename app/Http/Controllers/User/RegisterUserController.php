@@ -44,7 +44,7 @@ class RegisterUserController extends Controller
      */
     public function create()
     {
-        return view('layouts.main');
+        return view('user.register-user');
     }
 
     /**
