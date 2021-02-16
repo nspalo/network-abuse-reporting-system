@@ -60,7 +60,7 @@ class User extends \App\Database\Entities\User\User implements \Doctrine\ORM\Pro
 
 
     /**
-     * 
+     *
      * @return array
      */
     public function __sleep()
@@ -73,7 +73,7 @@ class User extends \App\Database\Entities\User\User implements \Doctrine\ORM\Pro
     }
 
     /**
-     * 
+     *
      */
     public function __wakeup()
     {
@@ -95,7 +95,7 @@ class User extends \App\Database\Entities\User\User implements \Doctrine\ORM\Pro
     }
 
     /**
-     * 
+     *
      */
     public function __clone()
     {
@@ -175,27 +175,27 @@ class User extends \App\Database\Entities\User\User implements \Doctrine\ORM\Pro
         return self::$lazyPropertiesDefaults;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
-    public function getEmailAddress(): string
+    public function getEmail(): string
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEmailAddress', []);
 
-        return parent::getEmailAddress();
+        return parent::getEmail();
     }
 
     /**
      * {@inheritDoc}
      */
-    public function setEmailAddress(string $emailAddress): void
+    public function setEmail(string $emailAddress): void
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEmailAddress', [$emailAddress]);
 
-        parent::setEmailAddress($emailAddress);
+        parent::setEmail($emailAddress);
     }
 
     /**

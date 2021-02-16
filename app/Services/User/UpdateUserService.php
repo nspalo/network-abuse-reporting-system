@@ -49,7 +49,7 @@ class UpdateUserService extends AbstractService
         $user = $this->userRepository->findByEmailAddress($updateUserRequest->getEmailAddress());
 
         if($user) {
-            $user->setEmailAddress($updateUserRequest->getEmailAddress());
+            $user->setEmail($updateUserRequest->getEmailAddress());
             $user->setUsername($updateUserRequest->getUsername());
             $user->setPassword($updateUserRequest->getPassword());
             $user->setFirstName($updateUserRequest->getFirstName());
