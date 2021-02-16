@@ -66,10 +66,16 @@ return [
     */
 
     'providers' => [
+        // Use doctrine auth driver for authentication
         'users' => [
-            'driver' => 'eloquent',
-            'model' => App\User::class,
+            'driver' => 'doctrine',
+            'model' => App\Database\Entities\User\User::class,
         ],
+
+//        'users' => [
+//            'driver' => 'eloquent',
+//            'model' => App\User::class,
+//        ],
 
         // 'users' => [
         //     'driver' => 'database',
