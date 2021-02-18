@@ -11,9 +11,9 @@
 |
 */
 
-//Route::get('/', function () {
-//    return view('layouts.main');
-//});
+Route::get('/', function () {
+    return view('layouts.main');
+});
 
 Route::group(['prefix' => 'users'], function () {
 
@@ -55,3 +55,7 @@ Route::group(['prefix' => 'network-abuse'], function () {
     Route::get('/check/user', 'AbuseReporting\AbuseReportingController@checkAbuseReportRecordByUsername');
     Route::get('/check/user/{username}', 'AbuseReporting\AbuseReportingController@checkAbuseReportRecordByUsername');
 });
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
