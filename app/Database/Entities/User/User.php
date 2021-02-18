@@ -31,10 +31,10 @@ class User extends Entity implements HasRolesContract, AuthenticatableContract, 
     /**
      * Email Address
      *
-     * @ORM\Column(name="email_address", type="string", length=128, unique=true, nullable=false)
+     * @ORM\Column(name="email", type="string", length=128, unique=true, nullable=false)
      * @var string
      */
-    protected $emailAddress;
+    protected $email;
 
     /**
      * Username
@@ -87,7 +87,7 @@ class User extends Entity implements HasRolesContract, AuthenticatableContract, 
      */
     public function __construct(string $emailAddress, string $username, string $password, string $firstName, string $lastName)
     {
-        $this->setEmailAddress($emailAddress);
+        $this->setEmail($emailAddress);
         $this->setUsername($username);
         $this->setPassword($password);
         $this->setFirstName($firstName);
@@ -99,30 +99,30 @@ class User extends Entity implements HasRolesContract, AuthenticatableContract, 
     /**
      * @return string
      */
-    public function getEmailAddress(): string
+    public function getEmail(): string
     {
-        return $this->emailAddress;
+        return $this->email;
     }
 
     /**
      * Set User email
-     * @param string $emailAddress
+     * @param string $email
      */
-    public function setEmailAddress(string $emailAddress): void
+    public function setEmail(string $email): void
     {
-        if (empty($emailAddress)) {
+        if (empty($email)) {
             throw new \RuntimeException('Email address cannot be empty.');
         }
 
-        if (strlen($emailAddress) > 128) {
+        if (strlen($email) > 128) {
             throw new \RuntimeException('Email address was more than 128 characters.');
         }
 
-        if (! filter_var($emailAddress, FILTER_VALIDATE_EMAIL)) {
+        if (! filter_var($email, FILTER_VALIDATE_EMAIL)) {
             throw new \RuntimeException('Email address is not valid.');
         }
 
-        $this->emailAddress = $emailAddress;
+        $this->email = $email;
     }
 
     /**

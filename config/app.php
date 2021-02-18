@@ -156,7 +156,7 @@ return [
         Illuminate\Pipeline\PipelineServiceProvider::class,
         Illuminate\Queue\QueueServiceProvider::class,
         Illuminate\Redis\RedisServiceProvider::class,
-        Illuminate\Auth\Passwords\PasswordResetServiceProvider::class,
+//        Illuminate\Auth\Passwords\PasswordResetServiceProvider::class, // Replace with Laravel-Doctrine's password reset
         Illuminate\Session\SessionServiceProvider::class,
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
@@ -182,6 +182,8 @@ return [
         LaravelDoctrine\ACL\AclServiceProvider::class,
         LaravelDoctrine\Migrations\MigrationsServiceProvider::class,
         LaravelDoctrine\Extensions\GedmoExtensionsServiceProvider::class,
+        // Replaces the  built-in Laravel reset password service
+        LaravelDoctrine\ORM\Auth\Passwords\PasswordResetServiceProvider::class,
 
         /*
          * Custom Service Providers...
