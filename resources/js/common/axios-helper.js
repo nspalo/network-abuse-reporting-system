@@ -15,9 +15,19 @@ export function store(form) {
                 form.reset();
             }
 
-            // refresh
-            // window.location = '/network-abuse/report';
-            // window.location.reload();
+            /**
+             * If there's a redirect url, auto reloading is allowed,
+             * - Reload the page if can auto reload, otherwise
+             *   use the provided redirect url
+             */
+            if(form.canAutoReload) {
+                // Reload the page
+                window.location.reload();
+            }
+            else if(form.hasRedirectUrl) {
+                // Redirect
+                window.location = form.redirectUrl;
+            }
 
         })
         .catch(function (error) {
@@ -40,9 +50,19 @@ export function update(form) {
                 form.reset();
             }
 
-            // refresh
-            // window.location = '/';
-            window.location.reload();
+            /**
+             * If there's a redirect url, auto reloading is allowed,
+             * - Reload the page if can auto reload, otherwise
+             *   use the provided redirect url
+             */
+            if(form.canAutoReload) {
+                // Reload the page
+                window.location.reload();
+            }
+            else if(form.hasRedirectUrl) {
+                // Redirect
+                window.location = form.redirectUrl;
+            }
 
         })
         .catch(function (error) {

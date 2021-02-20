@@ -5,15 +5,17 @@ import NotificationHelper from "./notification-helper";
  * Form Helper
  * - author: Noel Palo
  */
-export default class formHelper {
+export default class FormHelper {
 
     constructor(event) {
         this._event = event;
-        this._route = this._redirect = "/";
+        this._route = "/";
+        this._redirectUrl = "/";
         this._formId = $(this._event.currentTarget).parents('form').attr('id');
         this._formObj = $("#" + this._formId);
         this._button = new buttonAnimator($(this._event.currentTarget));
         this._notifier = new NotificationHelper();
+
     }
 
     /**
@@ -40,15 +42,32 @@ export default class formHelper {
     /**
      * Get redirect url
      */
-    get redirect() {
-        return this._redirect;
+    get redirectUrl() {
+        return this._redirectUrl;
     }
 
     /**
      * Set redirect url
      */
-    set redirect(url) {
-        this._redirect = url;
+    set redirectUrl(url) {
+        this._redirectUrl = url;
+    }
+
+    /**
+     * Get redirect url
+     */
+    get hasRedirectUrl() {
+        return ! (this.redirectUrl !== "/"
+            || this.redirectUrl !== ""
+            || this.redirectUrl !== undefined
+        );
+    }
+
+    /**
+     * Get redirect url
+     */
+    get canAutoReload() {
+        return this.hasRedirectUrl === false;
     }
 
     /**
