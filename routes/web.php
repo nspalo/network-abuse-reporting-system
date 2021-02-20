@@ -11,6 +11,8 @@
 |
 */
 
+use Illuminate\Support\Facades\Route;
+
 Route::get('/', function () {
     return view('layouts.main');
 });
@@ -24,11 +26,25 @@ Route::group(['prefix' => 'users'], function () {
     Route::post('/register', 'User\RegisterUserController@store');
 
     /**
+     * Login
+     */
+    Route::get('/login', 'Auth\LoginController@showLoginForm')->name('login');
+    Route::post('/login', 'Auth\LoginController@login');
+    Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
+
+    /**
+     * Password
+     */
+    Route::get('/password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');
+    Route::get('/password/reset/{token}', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.reset');
+    Route::post('/password/reset', 'Auth\ForgotPasswordController@reset')->name('password.update');
+    Route::post('/password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
+
+    /**
      * Update User Details
      */
     Route::get('/edit/{userId}', 'User\UpdateUserController@show');
     Route::post('/edit', 'User\UpdateUserController@store');
-
 
     /**
      * Users
@@ -56,6 +72,6 @@ Route::group(['prefix' => 'network-abuse'], function () {
     Route::get('/check/user/{username}', 'AbuseReporting\AbuseReportingController@checkAbuseReportRecordByUsername');
 });
 
-Auth::routes();
+//Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');

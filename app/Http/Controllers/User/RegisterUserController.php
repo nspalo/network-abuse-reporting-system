@@ -2,29 +2,35 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\NetworkAbuseReportingSystemController;
 use App\Http\Requests\User\CreateUserRequest;
 use App\Services\User\CreateUserService;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Exception;
+use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\JsonResponse;
 
 /**
  * Class UserController
  * @package App\Http\Controllers\User
  */
-class RegisterUserController extends Controller
+class RegisterUserController extends NetworkAbuseReportingSystemController
 {
-    /**
-     * @var EntityManager
-     */
-    private $entityManager;
+    use RegistersUsers;
+
     /**
      * @var CreateUserService
      */
     private $userRegistrationService;
+
+    /**
+     * Where to redirect users after registration.
+     *
+     * @var string
+     */
+    protected $redirectTo = '/home';
 
     /**
      * UserController constructor.
@@ -35,8 +41,11 @@ class RegisterUserController extends Controller
         EntityManager $entityManager,
         CreateUserService $userRegistrationService
     ) {
+        parent::__construct($entityManager);
         $this->entityManager = $entityManager;
         $this->userRegistrationService = $userRegistrationService;
+
+        $this->middleware('guest');
     }
 
     /**
@@ -44,7 +53,7 @@ class RegisterUserController extends Controller
      */
     public function create()
     {
-        return view('layouts.main');
+        return view('user.register');
     }
 
     /**
@@ -61,6 +70,9 @@ class RegisterUserController extends Controller
         $this->entityManager->persist($user);
         $this->entityManager->flush();
         $this->entityManager->refresh($user);
+
+        //event(new Registered($user));
+        $this->guard()->login($user);
 
         return response()->json([
             'success' => true,

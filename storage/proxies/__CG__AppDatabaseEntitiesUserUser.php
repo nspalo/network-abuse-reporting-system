@@ -60,20 +60,20 @@ class User extends \App\Database\Entities\User\User implements \Doctrine\ORM\Pro
 
 
     /**
-     *
+     * 
      * @return array
      */
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', 'emailAddress', 'username', 'password', 'firstName', 'lastName', 'roles', 'id', 'createdAt', 'updatedAt', 'rememberToken'];
+            return ['__isInitialized__', 'email', 'username', 'password', 'firstName', 'lastName', 'roles', 'id', 'createdAt', 'updatedAt', 'rememberToken'];
         }
 
-        return ['__isInitialized__', 'emailAddress', 'username', 'password', 'firstName', 'lastName', 'roles', 'id', 'createdAt', 'updatedAt', 'rememberToken'];
+        return ['__isInitialized__', 'email', 'username', 'password', 'firstName', 'lastName', 'roles', 'id', 'createdAt', 'updatedAt', 'rememberToken'];
     }
 
     /**
-     *
+     * 
      */
     public function __wakeup()
     {
@@ -95,7 +95,7 @@ class User extends \App\Database\Entities\User\User implements \Doctrine\ORM\Pro
     }
 
     /**
-     *
+     * 
      */
     public function __clone()
     {
@@ -175,14 +175,14 @@ class User extends \App\Database\Entities\User\User implements \Doctrine\ORM\Pro
         return self::$lazyPropertiesDefaults;
     }
 
-
+    
     /**
      * {@inheritDoc}
      */
     public function getEmail(): string
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEmailAddress', []);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEmail', []);
 
         return parent::getEmail();
     }
@@ -190,12 +190,12 @@ class User extends \App\Database\Entities\User\User implements \Doctrine\ORM\Pro
     /**
      * {@inheritDoc}
      */
-    public function setEmail(string $emailAddress): void
+    public function setEmail(string $email): void
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEmailAddress', [$emailAddress]);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEmail', [$email]);
 
-        parent::setEmail($emailAddress);
+        parent::setEmail($email);
     }
 
     /**

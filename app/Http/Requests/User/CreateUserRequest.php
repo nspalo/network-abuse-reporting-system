@@ -25,7 +25,7 @@ class CreateUserRequest extends FormRequest implements CreateUserRequestInterfac
     public function rules(): array
     {
         return [
-            'emailAddress' => 'required|string|email',
+            'email' => 'required|string|email',
             'username' => 'required|string',
             'password' => 'required|string|min:8',
             'firstname' => 'required|string',
@@ -38,7 +38,7 @@ class CreateUserRequest extends FormRequest implements CreateUserRequestInterfac
      */
     public function getEmailAddress()
     {
-        return $this->input('emailAddress');
+        return $this->input('email');
     }
 
     /**
