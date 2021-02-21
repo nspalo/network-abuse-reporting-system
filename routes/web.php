@@ -55,3 +55,82 @@ Route::group(['prefix' => 'network-abuse'], function () {
     Route::get('/check/user', 'AbuseReporting\AbuseReportingController@checkAbuseReportRecordByUsername');
     Route::get('/check/user/{username}', 'AbuseReporting\AbuseReportingController@checkAbuseReportRecordByUsername');
 });
+
+
+/**
+ *  SB Admin 2 Templates
+ */
+Route::group(['prefix' => 'sb-admin'], function () {
+
+    Route::get('/', function () {
+        return view('sb-admin-templates.dashboard');
+    });
+
+    Route::group(['prefix' => 'auth'], static function () {
+
+        Route::get('/login', function () {
+            return view('sb-admin-templates.login');
+        });
+
+        Route::get('/register', function () {
+            return view('sb-admin-templates.register');
+        });
+
+        Route::get('/forgot-password', function () {
+            return view('sb-admin-templates.forgot-password');
+        });
+    });
+
+    Route::group(['prefix' => 'pages'], static function () {
+
+        Route::get('/dashboard', function () {
+            return view('sb-admin-templates.dashboard');
+        });
+
+        Route::get('/404', function () {
+            return view('sb-admin-templates.404');
+        });
+
+        Route::get('/blank', function () {
+            return view('sb-admin-templates.blank');
+        });
+
+        Route::get('/charts', function () {
+            return view('sb-admin-templates.charts');
+        });
+
+        Route::get('/tables', function () {
+            return view('sb-admin-templates.tables');
+        });
+    });
+
+    Route::group(['prefix' => 'components'], static function () {
+        Route::get('/buttons', function () {
+            return view('sb-admin-templates.components.buttons');
+        });
+
+        Route::get('/cards', function () {
+            return view('sb-admin-templates.components.cards');
+        });
+    });
+
+    Route::group(['prefix' => 'utilities'], static function () {
+
+        Route::get('/colors', function () {
+            return view('sb-admin-templates.utilities.colors');
+        });
+
+        Route::get('/borders', function () {
+            return view('sb-admin-templates.utilities.borders');
+        });
+
+        Route::get('/animations', function () {
+            return view('sb-admin-templates.utilities.animations');
+        });
+
+        Route::get('/others', function () {
+            return view('sb-admin-templates.utilities.others');
+        });
+    });
+
+});
