@@ -17,6 +17,10 @@ Route::get('/', function () {
     return view('layouts.main');
 });
 
+Route::get('/home', function () {
+    return view('user.dashboard');
+});
+
 Route::group(['prefix' => 'users'], function () {
 
     /**
