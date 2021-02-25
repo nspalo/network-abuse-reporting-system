@@ -17,7 +17,7 @@ Route::get('/', function () {
     return view('layouts.main');
 });
 
-Route::get('/home', function () {
+Route::get('/users/dashboard', function () {
     return view('user.dashboard');
 });
 

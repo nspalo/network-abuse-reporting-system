@@ -67,16 +67,21 @@ class RegisterUserController extends NetworkAbuseReportingSystemController
     {
         $user = $this->userRegistrationService->handle($createUserRequest);
 
-        $this->entityManager->persist($user);
-        $this->entityManager->flush();
-        $this->entityManager->refresh($user);
+        try {
+            $this->entityManager->persist($user);
+            $this->entityManager->flush();
+            $this->entityManager->refresh($user);
 
-        //event(new Registered($user));
-        $this->guard()->login($user);
+            //event(new Registered($user));
+            $this->guard()->login($user);
 
-        return response()->json([
-            'success' => true,
-            'recordId' => $user->getId()
-        ]);
+            return response()->json([
+                'success' => true,
+                'recordId' => $user->getId()
+            ]);
+        }
+        catch (Exception $e){
+            throw new \RuntimeException('Unable to register new user.');
+        }
     }
 }

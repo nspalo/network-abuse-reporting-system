@@ -33,7 +33,8 @@ export function store(form) {
         .catch(function (error) {
             // Display Errors
             form.transaction.danger.notify('Error! Unable to process request.');
-            console.log(error);
+            console.log(error.message);
+            form.buttonAnimation.stop(5000);
         });
 }
 
@@ -68,6 +69,7 @@ export function update(form) {
         .catch(function (error) {
             // Display Errors
             form.transaction.danger.notify('Error! Unable to process request.');
-            console.log(error);
+            console.log(error.message);
+            form.buttonAnimation.stop(5000);
         });
 }
